@@ -3,7 +3,8 @@ const apiKey = '7846a756-8a6b-47d5-b42f-c56521b9893a'
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // getBreeds()
+
+    getBreeds()
     // getCategories()
     // getFavourites()
     getImages()
@@ -20,7 +21,8 @@ function handleSubmit(e) {
 }
 
 function getBreeds() {
-    let res;
+    let container = document.getElementById('breeds-container')
+
     fetch('https://api.thecatapi.com/v1/breeds', {
         headers: {
             'Content-Type': 'application/json',
@@ -29,14 +31,14 @@ function getBreeds() {
         }
     })
     .then(response => response.json())
-    .then(cats => {
-        console.log(cats)
-        // renderCat(cats[0])
-    })
+    .then(breeds => breeds.forEach(breed => {
+        let li = document.createElement('li')
+        li.innerHTML = breed.name
+        document.getElementById('breeds-container').appendChild(li)
+    }))
 }
 
 function getCategories() {
-    let res;
     fetch('https://api.thecatapi.com/v1/categories', {
         headers: {
             'Content-Type': 'application/json',
@@ -47,12 +49,10 @@ function getCategories() {
     .then(response => response.json())
     .then(cats => {
         console.log(cats)
-        // renderCat(cats[0])
     })
 }
 
 function getVotes() {
-    let res;
     fetch('https://api.thecatapi.com/v1/votes', {
         headers: {
             'Content-Type': 'application/json',
@@ -63,12 +63,10 @@ function getVotes() {
     .then(response => response.json())
     .then(cats => {
         console.log(cats)
-        // renderCat(cats[0])
     })
 }
 
 function getFavourites() {
-    let res;
     fetch('https://api.thecatapi.com/v1/favourites', {
         headers: {
             'Content-Type': 'application/json',
@@ -79,12 +77,10 @@ function getFavourites() {
     .then(response => response.json())
     .then(cats => {
         console.log(cats)
-        // renderCat(cats[0])
     })
 }
 
 function getImages() {
-    let res;
     fetch('https://api.thecatapi.com/v1/images/search?breed_id=beng', {
         headers: {
             'Content-Type': 'application/json',
@@ -94,8 +90,6 @@ function getImages() {
     })
     .then(response => response.json())
     .then(cats => {
-        console.log(cats[0])
-        console.log(cats[0].breeds)
         renderCat(cats[0])
         displayCatInfo(cats[0])
     })
@@ -105,13 +99,15 @@ function renderCat(catData) {
     let img = document.createElement('img');
     img.className = 'kitty'
     img.src = catData.url
-    // img.width = "500"
     img.height = '100'
 
     document.getElementById('results').appendChild(img)
 }
 
+
+
 function displayCatInfo(catData) {
+    let container = document.getElementById('results')
     let ul = document.createElement('ul')
     ul.innerHTML = `
     <li>Affection Level: ${catData.breeds[0].affection_level}</li>
@@ -123,6 +119,11 @@ function displayCatInfo(catData) {
     let p = document.createElement('p')
     p.innerHTML = catData.breeds[0].description
 
-    document.getElementById('results').appendChild(ul)
-    document.getElementById('results').appendChild(p)
+    container.appendChild(ul)
+    container.appendChild(p)
+
+    let favBttn = document.createElement('button')
+    favBttn.textContent = 'Favorite!'
+    console.log(favBttn)
+    container.appendChild(favBttn)
 }
