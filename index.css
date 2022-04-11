@@ -4,4 +4,19 @@ body {
     text-align: center;
   }
 
+ul#breeds-container {
+    list-style-type: none;
+    height: 260px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+}
+
+div#favorties {
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
 

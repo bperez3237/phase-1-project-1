@@ -2,27 +2,11 @@ const apiKey = '7846a756-8a6b-47d5-b42f-c56521b9893a'
 
 
 document.addEventListener('DOMContentLoaded', () => {
-
-
-    getBreeds()
-    // getCategories()
-    // getFavourites()
-    getImages()
-    // getVotes()
-    
-
-
-})
-
-
-function handleSubmit(e) {
-    e.preventDefault();
-    
-}
-
-function getBreeds() {
     let container = document.getElementById('breeds-container')
+    let form = document.getElementById('form')
 
+    const breedIds = {}
+    
     fetch('https://api.thecatapi.com/v1/breeds', {
         headers: {
             'Content-Type': 'application/json',
@@ -32,14 +16,33 @@ function getBreeds() {
     })
     .then(response => response.json())
     .then(breeds => breeds.forEach(breed => {
+        breedIds[breed.name] = breed.id
         let li = document.createElement('li')
         li.innerHTML = breed.name
         document.getElementById('breeds-container').appendChild(li)
     }))
-}
 
-function getCategories() {
-    fetch('https://api.thecatapi.com/v1/categories', {
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault()
+        if (e.target.input.value in breedIds) {
+            getImages(breedIds[e.target.input.value])
+            form.input.value = ''
+        }
+        else {
+            e.target.input.value = 'BREED NOT FOUND'
+            setTimeout(() => {
+                form.input.value = ''
+            },3000)
+        }
+    })
+
+})
+
+
+function getImages(breedId) {
+    const results = document.getElementById('results')
+    fetch(`https://api.thecatapi.com/v1/images/search?breed_id=${breedId}`, {
         headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
@@ -48,52 +51,12 @@ function getCategories() {
     })
     .then(response => response.json())
     .then(cats => {
-        console.log(cats)
-    })
-}
-
-function getVotes() {
-    fetch('https://api.thecatapi.com/v1/votes', {
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            'x-api-key': apiKey
-        }
-    })
-    .then(response => response.json())
-    .then(cats => {
-        console.log(cats)
-    })
-}
-
-function getFavourites() {
-    fetch('https://api.thecatapi.com/v1/favourites', {
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            'x-api-key': apiKey
-        }
-    })
-    .then(response => response.json())
-    .then(cats => {
-        console.log(cats)
-    })
-}
-
-function getImages() {
-    fetch('https://api.thecatapi.com/v1/images/search?breed_id=beng', {
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            'x-api-key': apiKey
-        }
-    })
-    .then(response => response.json())
-    .then(cats => {
+        results.innerHTML = ''
         renderCat(cats[0])
         displayCatInfo(cats[0])
     })
 }
+
 
 function renderCat(catData) {
     let img = document.createElement('img');
@@ -105,9 +68,10 @@ function renderCat(catData) {
 }
 
 
-
 function displayCatInfo(catData) {
     let container = document.getElementById('results')
+    let favs = document.getElementById('favorites')
+
     let ul = document.createElement('ul')
     ul.innerHTML = `
     <li>Affection Level: ${catData.breeds[0].affection_level}</li>
@@ -124,6 +88,26 @@ function displayCatInfo(catData) {
 
     let favBttn = document.createElement('button')
     favBttn.textContent = 'Favorite!'
-    console.log(favBttn)
+    favBttn.addEventListener('click', () => {
+        let favCard = document.createElement('div')
+        let img = document.createElement('img')
+        let name = document.createElement('p')
+        img.src = catData.url
+        img.height = '100'
+
+        name.innerHTML = `<h2>${catData.breeds[0].name}<h2/>`
+        favCard.appendChild(img)
+        favCard.appendChild(name)
+        if (favs.children.length == 3) {
+            favs.removeChild(favs.children[0])
+            favs.appendChild(favCard)
+        }
+        else {
+            favs.appendChild(favCard)
+        }
+
+
+    })
+
     container.appendChild(favBttn)
 }
