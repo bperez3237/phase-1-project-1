@@ -4,9 +4,10 @@ const apiKey = '7846a756-8a6b-47d5-b42f-c56521b9893a'
 document.addEventListener('DOMContentLoaded', () => {
     let container = document.getElementById('breeds-container')
     let form = document.getElementById('form')
+    let getCatForm = document.getElementById('get-cat')
 
     const breedIds = {}
-    
+
     fetch('https://api.thecatapi.com/v1/breeds', {
         headers: {
             'Content-Type': 'application/json',
@@ -24,6 +25,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     form.addEventListener('submit', (e) => {
+        e.preventDefault()
+        if (e.target.input.value in breedIds) {
+            getImages(breedIds[e.target.input.value])
+            form.input.value = ''
+        }
+        else {
+            e.target.input.value = 'BREED NOT FOUND'
+            setTimeout(() => {
+                form.input.value = ''
+            },3000)
+        }
+    })
+
+    getCatForm.addEventListener('submit', (e) => {
         e.preventDefault()
         if (e.target.input.value in breedIds) {
             getImages(breedIds[e.target.input.value])
@@ -67,6 +82,9 @@ function renderCat(catData) {
     document.getElementById('results').appendChild(img)
 }
 
+function checkIfFavd() {
+
+}
 
 function displayCatInfo(catData) {
     let container = document.getElementById('results')
@@ -95,9 +113,11 @@ function displayCatInfo(catData) {
         img.src = catData.url
         img.height = '100'
 
-        name.innerHTML = `<h2>${catData.breeds[0].name}<h2/>`
+        name.id = `${catData.breeds[0].id}`
+        name.innerHTML = `${catData.breeds[0].name}`
         favCard.appendChild(img)
         favCard.appendChild(name)
+
         if (favs.children.length == 3) {
             favs.removeChild(favs.children[0])
             favs.appendChild(favCard)
@@ -105,6 +125,8 @@ function displayCatInfo(catData) {
         else {
             favs.appendChild(favCard)
         }
+
+        console.log(favs.children[0])
 
 
     })
