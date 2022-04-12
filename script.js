@@ -1,68 +1,21 @@
-const apiKey = '7846a756-8a6b-47d5-b42f-c56521b9893a'
 
+
+const apiKey = '7846a756-8a6b-47d5-b42f-c56521b9893a'
 const breedIds = {}
 
-function handleSearchSubmit(event) {
-    let searchForm = document.getElementById('form')
 
-    event.preventDefault()
-    if (event.target.input.value in breedIds) {
-        getImages(breedIds[event.target.input.value])
-        searchForm.input.value = ''
-    }
-    else {
-        event.target.input.value = 'BREED NOT FOUND'
-        setTimeout(() => {
-            searchForm.input.value = ''
-        },3000)
-    }
+
+
+
+
+function renderCat(catData) {
+    let img = document.createElement('img');
+    img.className = 'kitty'
+    img.src = catData.url
+    img.height = '100'
+
+    document.getElementById('results').appendChild(img)
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    let search = document.getElementById('search')
-    let container = document.getElementById('breeds-container')
-    let searchForm = document.getElementById('form')
-    let getCatForm = document.getElementById('form2')
-
-    // const breedIds = {}
-
-    fetch('https://api.thecatapi.com/v1/breeds', {
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            'x-api-key': apiKey
-        }
-    })
-    .then(response => response.json())
-    .then(breeds => breeds.forEach(breed => {
-        breedIds[breed.name] = breed.id
-        let li = document.createElement('li')
-        li.innerHTML = breed.name
-        container.appendChild(li)
-    }))
-
-
-    searchForm.addEventListener('submit', (e) => handleSearchSubmit(e))
-
-    getCatForm.addEventListener('submit', (e) => {
-        e.preventDefault()
-         
-        if (e.target.breedInput.value in breedIds) {
-            alert(`CONGRATULATIONS!!! ${getCatForm.nameInput.value} the ${getCatForm.breedInput.value} is now yours!`)
-            getCatForm.breedInput.value = ''
-            getCatForm.nameInput.value = ''
-        }
-        else {
-            e.target.breedInput.value = 'BREED NOT FOUND'
-            setTimeout(() => {
-                getCatForm.breedInput.value = ''
-                getCatForm.nameInput.value = ''
-            },3000)
-        }
-    })
-
-})
-
 
 function getImages(breedId) {
     const results = document.getElementById('results')
@@ -82,13 +35,87 @@ function getImages(breedId) {
 }
 
 
-function renderCat(catData) {
-    let img = document.createElement('img');
-    img.className = 'kitty'
-    img.src = catData.url
-    img.height = '100'
+function handleSearchSubmit(event) {
+    let searchForm = document.getElementById('form')
+    event.preventDefault()
 
-    document.getElementById('results').appendChild(img)
+    if (event.target.input.value in breedIds) {
+        getImages(breedIds[event.target.input.value])
+        searchForm.input.value = ''
+    }
+    else {
+        event.target.input.value = 'BREED NOT FOUND'
+        setTimeout(() => {
+            searchForm.input.value = ''
+        },3000)
+    }
+}
+
+function handleGetCatSubmit(event) {
+    let getCatForm = document.getElementById('form2')
+    event.preventDefault()
+         
+    if (event.target.breedInput.value in breedIds) {
+        alert(`CONGRATULATIONS!!! ${getCatForm.nameInput.value} the ${getCatForm.breedInput.value} is now yours!`)
+        getCatForm.breedInput.value = ''
+        getCatForm.nameInput.value = ''
+    }
+    else {
+        event.target.breedInput.value = 'BREED NOT FOUND'
+        setTimeout(() => {
+            getCatForm.breedInput.value = ''
+            getCatForm.nameInput.value = ''
+        },3000)
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    let search = document.getElementById('search')
+    let container = document.getElementById('breeds-container')
+    let searchForm = document.getElementById('form')
+    let getCatForm = document.getElementById('form2')
+
+    fetch('https://api.thecatapi.com/v1/breeds', {
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            'x-api-key': apiKey
+        }
+    })
+    .then(response => response.json())
+    .then(breeds => breeds.forEach(breed => {
+        breedIds[breed.name] = breed.id
+        let li = document.createElement('li')
+        li.innerHTML = breed.name
+        container.appendChild(li)
+    }))
+
+
+    searchForm.addEventListener('submit', (e) => handleSearchSubmit(e))
+    getCatForm.addEventListener('submit', (e) => handleGetCatSubmit(e))
+
+})
+
+function checkFavorites(currentCat, currentFavorites,favoritesContainer,newFavorite) {
+    let checker = true
+    for (i=0;i<currentFavorites.length;i++) {
+        if (currentFavorites[i].getElementsByTagName('p')[0].textContent === currentCat.breeds[0].name) {
+            checker = checker && false
+        }
+    }
+    if (currentFavorites.length != 3 && checker === true) {
+        favoritesContainer.appendChild(newFavorite)
+    }
+    else if (currentFavorites.length != 3 && checker === false) {
+        alert('AREADY IN FAVORITES')
+    }
+    else if (currentFavorites.length === 3 && checker === true) {
+        favoritesContainer.removeChild(currentFavorites[0])
+        favoritesContainer.appendChild(newFavorite)
+    }
+    else {
+        alert('AREADY IN FAVORITES')
+    }
 }
 
 
@@ -130,25 +157,8 @@ function displayCatInfo(catData) {
         favCard.appendChild(name)
         favCard.setAttribute('style','width:200px')
 
-        let checker = true
-        for (i=0;i<favs.children.length;i++) {
-            if (favs.children[i].getElementsByTagName('p')[0].textContent === catData.breeds[0].name) {
-                checker = checker && false
-            }
-        }
-        if (favs.children.length != 3 && checker === true) {
-            favs.appendChild(favCard)
-        }
-        else if (favs.children.length != 3 && checker === false) {
-            alert('AREADY IN FAVORITES')
-        }
-        else if (favs.children.length === 3 && checker === true) {
-            favs.removeChild(favs.children[0])
-            favs.appendChild(favCard)
-        }
-        else {
-            alert('AREADY IN FAVORITES')
-        }
+
+        checkFavorites(catData, favs.children, favs, favCard)
     })
     container.appendChild(favBttn)
 }
