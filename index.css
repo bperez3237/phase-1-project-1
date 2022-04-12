@@ -1,25 +1,32 @@
 body {
-    margin: 0;
-    font-family: monospace;
-    text-align: center;
-  }
+  margin: 0;
+  font-family: monospace;
+  text-align: center;
+  background-color:rgb(251, 138, 202);
+  font-weight: bold;
+}
+
 
 div { 
+  background-color: azure;
   border-style: solid;
   border-width: 2px;
   padding: 2px;
-  /* display: flex;
-  justify-content: center; */
 
 }
+
 
 #get-cat {
   top: 600px;
   align-items: center;
 }
+
+
 #search {
+  min-width: 300px;
   height: 200px;
 }
+
 
 #results {
   min-height: 200px;
@@ -32,13 +39,10 @@ ul {
 
 #breeds-container {
   overflow-y: scroll;
-
   height: 75px;
-
 }
 
 div#favorites {
-
   height: 150px;
   display: flex;
   flex-direction: row;
@@ -46,6 +50,8 @@ div#favorites {
 }
 
 #get-cat {
+  margin: auto;
   height: 100px;
-  /* width: 200px; */
+  width: 300px;
 }
+

@@ -2,6 +2,7 @@ const apiKey = '7846a756-8a6b-47d5-b42f-c56521b9893a'
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    let search = document.getElementById('search')
     let container = document.getElementById('breeds-container')
     let searchForm = document.getElementById('form')
     let getCatForm = document.getElementById('form2')
@@ -43,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
          
         if (e.target.breedInput.value in breedIds) {
             alert(`CONGRATULATIONS!!! ${getCatForm.nameInput.value} the ${getCatForm.breedInput.value} is now yours!`)
-            // console.log(getCatForm)
             getCatForm.breedInput.value = ''
             getCatForm.nameInput.value = ''
         }
@@ -91,7 +91,6 @@ function displayCatInfo(catData) {
     let container = document.getElementById('results')
     let favs = document.getElementById('favorites')
 
-    console.log(catData)
     let ul = document.createElement('ul')
     ul.innerHTML = `
     <h3>${catData.breeds[0].name}</h3>
@@ -136,16 +135,15 @@ function displayCatInfo(catData) {
             favs.appendChild(favCard)
         }
         else if (favs.children.length != 3 && checker === false) {
-            console.log('AREADY IN FAVORITES')
+            alert('AREADY IN FAVORITES')
         }
         else if (favs.children.length === 3 && checker === true) {
             favs.removeChild(favs.children[0])
             favs.appendChild(favCard)
         }
         else {
-            console.log('AREADY IN FAVORITES')
+            alert('AREADY IN FAVORITES')
         }
     })
-
     container.appendChild(favBttn)
 }
