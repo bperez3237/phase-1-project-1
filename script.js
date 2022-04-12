@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         breedIds[breed.name] = breed.id
         let li = document.createElement('li')
         li.innerHTML = breed.name
-        document.getElementById('breeds-container').appendChild(li)
+        container.appendChild(li)
     }))
 
 
@@ -87,13 +87,18 @@ function displayCatInfo(catData) {
     let container = document.getElementById('results')
     let favs = document.getElementById('favorites')
 
+    console.log(catData)
     let ul = document.createElement('ul')
     ul.innerHTML = `
+    <h3>${catData.breeds[0].name}</h3>
     <li>Affection Level: ${catData.breeds[0].affection_level}</li>
     <li>Energy Level: ${catData.breeds[0].energy_level}</li>
     <li>Hairless: ${catData.breeds[0].hairless === 1}</li>
     <li>Intelligence Level: ${catData.breeds[0].intelligence}</li>
     <li>Life Span: ${catData.breeds[0].life_span} years</li>
+    <li>Weight: ${catData.breeds[0].weight['imperial']} lbs</li><br>
+
+    <li>The ${catData.breeds[0].name} is ${catData.breeds[0].temperament}</li>
     `
     let p = document.createElement('p')
     p.innerHTML = catData.breeds[0].description
@@ -109,12 +114,13 @@ function displayCatInfo(catData) {
         let name = document.createElement('p')
         img.src = catData.url
         img.height = '100'
-
+        
         name.id = `${catData.breeds[0].id}`
         name.innerHTML = `${catData.breeds[0].name}`
+
         favCard.appendChild(img)
         favCard.appendChild(name)
-
+        favCard.setAttribute('style','width:200px')
 
         let checker = true
         for (i=0;i<favs.children.length;i++) {
@@ -135,15 +141,6 @@ function displayCatInfo(catData) {
         else {
             console.log('AREADY IN FAVORITES')
         }
-
-        
-
-
-
-      
-
-
-
     })
 
     container.appendChild(favBttn)

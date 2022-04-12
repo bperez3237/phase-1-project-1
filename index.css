@@ -8,6 +8,8 @@ div {
   border-style: solid;
   border-width: 2px;
   padding: 2px;
+  height: 200;
+
 }
 
 #get-cat {
@@ -19,13 +21,10 @@ ul {
   list-style-type: none;
 }
 
-
-
 #breeds-container {
-  height: 260px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
+  overflow-y: scroll;
+
+  height: 75px;
 
 }
 
