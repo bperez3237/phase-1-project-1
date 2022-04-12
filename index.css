@@ -8,7 +8,8 @@ div {
   border-style: solid;
   border-width: 2px;
   padding: 2px;
-  height: 200;
+  /* display: flex;
+  justify-content: center; */
 
 }
 
@@ -16,6 +17,14 @@ div {
   top: 600px;
   align-items: center;
 }
+#search {
+  height: 200px;
+}
+
+#results {
+  min-height: 200px;
+}
+
 
 ul {
   list-style-type: none;
@@ -36,3 +45,7 @@ div#favorites {
   justify-content: center;
 }
 
+#get-cat {
+  height: 100px;
+  /* width: 200px; */
+}
