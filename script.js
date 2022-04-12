@@ -138,11 +138,16 @@ function handleGetCatSubmit(event) {
     }
 }
 
+function clearFavorites() {
+    let favs = document.getElementById('favorites')
+    favs.innerHTML = ''
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     let container = document.getElementById('breeds-container')
     let searchForm = document.getElementById('form')
     let getCatForm = document.getElementById('form2')
+    let clearFavs = document.getElementById('clear')
 
     fetch('https://api.thecatapi.com/v1/breeds', {
         headers: {
@@ -162,5 +167,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     searchForm.addEventListener('submit', (e) => handleSearchSubmit(e))
     getCatForm.addEventListener('submit', (e) => handleGetCatSubmit(e))
+    clearFavs.addEventListener('click', () => clearFavorites())
 
 })
