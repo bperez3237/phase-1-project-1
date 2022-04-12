@@ -82,9 +82,6 @@ function renderCat(catData) {
     document.getElementById('results').appendChild(img)
 }
 
-function checkIfFavd() {
-
-}
 
 function displayCatInfo(catData) {
     let container = document.getElementById('results')
@@ -118,15 +115,33 @@ function displayCatInfo(catData) {
         favCard.appendChild(img)
         favCard.appendChild(name)
 
-        if (favs.children.length == 3) {
+
+        let checker = true
+        for (i=0;i<favs.children.length;i++) {
+            if (favs.children[i].getElementsByTagName('p')[0].textContent === catData.breeds[0].name) {
+                checker = checker && false
+            }
+        }
+        if (favs.children.length != 3 && checker === true) {
+            favs.appendChild(favCard)
+        }
+        else if (favs.children.length != 3 && checker === false) {
+            console.log('AREADY IN FAVORITES')
+        }
+        else if (favs.children.length === 3 && checker === true) {
             favs.removeChild(favs.children[0])
             favs.appendChild(favCard)
         }
         else {
-            favs.appendChild(favCard)
+            console.log('AREADY IN FAVORITES')
         }
 
-        console.log(favs.children[0])
+        
+
+
+
+      
+
 
 
     })
