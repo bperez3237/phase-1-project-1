@@ -1,5 +1,22 @@
 const apiKey = '7846a756-8a6b-47d5-b42f-c56521b9893a'
 
+const breedIds = {}
+
+function handleSearchSubmit(event) {
+    let searchForm = document.getElementById('form')
+
+    event.preventDefault()
+    if (event.target.input.value in breedIds) {
+        getImages(breedIds[event.target.input.value])
+        searchForm.input.value = ''
+    }
+    else {
+        event.target.input.value = 'BREED NOT FOUND'
+        setTimeout(() => {
+            searchForm.input.value = ''
+        },3000)
+    }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     let search = document.getElementById('search')
@@ -7,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let searchForm = document.getElementById('form')
     let getCatForm = document.getElementById('form2')
 
-    const breedIds = {}
+    // const breedIds = {}
 
     fetch('https://api.thecatapi.com/v1/breeds', {
         headers: {
@@ -25,19 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }))
 
 
-    searchForm.addEventListener('submit', (e) => {
-        e.preventDefault()
-        if (e.target.input.value in breedIds) {
-            getImages(breedIds[e.target.input.value])
-            searchForm.input.value = ''
-        }
-        else {
-            e.target.input.value = 'BREED NOT FOUND'
-            setTimeout(() => {
-                searchForm.input.value = ''
-            },3000)
-        }
-    })
+    searchForm.addEventListener('submit', (e) => handleSearchSubmit(e))
 
     getCatForm.addEventListener('submit', (e) => {
         e.preventDefault()
