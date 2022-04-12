@@ -3,8 +3,8 @@ const apiKey = '7846a756-8a6b-47d5-b42f-c56521b9893a'
 
 document.addEventListener('DOMContentLoaded', () => {
     let container = document.getElementById('breeds-container')
-    let form = document.getElementById('form')
-    let getCatForm = document.getElementById('get-cat')
+    let searchForm = document.getElementById('form')
+    let getCatForm = document.getElementById('form2')
 
     const breedIds = {}
 
@@ -24,30 +24,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }))
 
 
-    form.addEventListener('submit', (e) => {
+    searchForm.addEventListener('submit', (e) => {
         e.preventDefault()
         if (e.target.input.value in breedIds) {
             getImages(breedIds[e.target.input.value])
-            form.input.value = ''
+            searchForm.input.value = ''
         }
         else {
             e.target.input.value = 'BREED NOT FOUND'
             setTimeout(() => {
-                form.input.value = ''
+                searchForm.input.value = ''
             },3000)
         }
     })
 
     getCatForm.addEventListener('submit', (e) => {
         e.preventDefault()
-        if (e.target.input.value in breedIds) {
-            getImages(breedIds[e.target.input.value])
-            form.input.value = ''
+         
+        if (e.target.breedInput.value in breedIds) {
+            alert(`CONGRATULATIONS!!! ${getCatForm.nameInput.value} the ${getCatForm.breedInput.value} is now yours!`)
+            // console.log(getCatForm)
+            getCatForm.breedInput.value = ''
+            getCatForm.nameInput.value = ''
         }
         else {
-            e.target.input.value = 'BREED NOT FOUND'
+            e.target.breedInput.value = 'BREED NOT FOUND'
             setTimeout(() => {
-                form.input.value = ''
+                getCatForm.breedInput.value = ''
+                getCatForm.nameInput.value = ''
             },3000)
         }
     })
