@@ -33,9 +33,6 @@ function checkFavorites(currentCat, newFavorite) {
     if (favs.children.length != 3 && checker === true) {
         favs.appendChild(newFavorite)
     }
-    else if (favs.children.length != 3 && checker === false) {
-        alert('AREADY IN FAVORITES')
-    }
     else if (favs.children.length === 3 && checker === true) {
         favs.removeChild(favs.children[0])
         favs.appendChild(newFavorite)
