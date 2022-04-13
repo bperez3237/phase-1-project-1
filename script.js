@@ -21,12 +21,12 @@ function handleSearchSubmit(event) {
 }
 
 
-function checkFavorites(currentCat, newFavorite) {
+function checkFavorites(newFavorite) {
     let favs = document.getElementById('favorites')
 
     let checker = true
     for (i=0;i<favs.children.length;i++) {
-        if (favs.children[i].getElementsByTagName('p')[0].textContent === currentCat.breeds[0].name) {
+        if (favs.children[i].getElementsByTagName('p')[0].textContent === newFavorite.getElementsByTagName('p')[0].textContent) {
             checker = checker && false
         }
     }
@@ -57,7 +57,7 @@ function handleFavoriteClick(currentCat) {
     favCard.appendChild(name)
     favCard.setAttribute('style','width:200px')
 
-    checkFavorites(currentCat, favCard)
+    checkFavorites(favCard)
 }
 
 
@@ -167,3 +167,37 @@ document.addEventListener('DOMContentLoaded', () => {
     clearFavs.addEventListener('click', () => clearFavorites())
 
 })
+
+
+
+// function checkFavorites(currentCat, newFavorite) {
+//     let favs = document.getElementById('favorites')
+
+
+
+
+
+
+
+
+
+
+
+
+//     let checker = true
+//     for (i=0;i<favs.children.length;i++) {
+//         if (favs.children[i].getElementsByTagName('p')[0].textContent === currentCat.breeds[0].name) {
+//             checker = checker && false
+//         }
+//     }
+//     if (favs.children.length != 3 && checker === true) {
+//         favs.appendChild(newFavorite)
+//     }
+//     else if (favs.children.length === 3 && checker === true) {
+//         favs.removeChild(favs.children[0])
+//         favs.appendChild(newFavorite)
+//     }
+//     else {
+//         alert('AREADY IN FAVORITES')
+//     }
+// }
